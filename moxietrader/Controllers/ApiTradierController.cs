@@ -77,7 +77,7 @@ namespace moxietrader.Controllers
         [Route("api/tradierTimeSales/{symbol}/{token}")]
         public Models.TradierTimeSalesSeries GetTradierTimeSales(string symbol, string token)
         {
-            string start = DateTime.Now.AddDays(-38).ToString("yyyy-MM-dd HH:mm");
+            string start = DateTime.Now.AddDays(-50).ToString("yyyy-MM-dd HH:mm");
             string end = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
 
             var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://api.tradier.com/v1/markets/timesales?symbol=" + symbol + "&interval=15min&start=" + start + "&end=" + end);

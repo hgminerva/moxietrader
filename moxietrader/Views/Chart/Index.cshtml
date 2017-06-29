@@ -167,6 +167,7 @@
 
     var _goldColor = "#FFA200";
     var _grayColor = "#858583";
+    var _darkGrayColor = "#373737";
     var _yellowColor = "#FFFF00";
     var _greenColor = "#00FF00";
     var _blueColor = "#0000FF";
@@ -338,36 +339,11 @@
         var monthly_previousMonth = 0;
         var yearly_previousYear = 0;
 
-        // ============
-        // Daily-Weekly
-        // ============
         if (dataType == "Daily") {              
             if (_symbolEOD.length > 0) {
                 for (var i = _symbolEOD.length - 1; i >= 0; i--) {
                     var quoteDate = parseChartDate(_symbolEOD[i].QuoteDate);
-                    // Weekly
-                    if (i == _symbolEOD.length - 1) {
-                        macd_open = _symbolEOD[i].OpenPrice;
-                        macd_high = _symbolEOD[i].HighPrice;
-                        macd_low = _symbolEOD[i].LowPrice;
-                        macd_close = _symbolEOD[i].ClosePrice;
-                        macd_volume = AmCharts.roundTo(_symbolEOD[i].Volume / 1000000, 2);
-                    } else {
-                        if (quoteDate.getDay() == 5) {
-                            macd_open = _symbolEOD[i].OpenPrice;
-                            macd_high = _symbolEOD[i].HighPrice;
-                            macd_low = _symbolEOD[i].LowPrice;
-                            macd_close = _symbolEOD[i].ClosePrice;
-                            macd_volume = AmCharts.roundTo(_symbolEOD[i].Volume / 1000000, 2);
-                        } else {
-                            macd_open = 'NaN';
-                            macd_high = 'NaN';
-                            macd_low = 'NaN';
-                            macd_close = 'NaN';
-                            macd_volume = 'NaN';
-                        }
-                    }
-                    // Save Daily-Weekly
+
                     data.push({
                         date: quoteDate,
 
@@ -377,110 +353,95 @@
                         close: _symbolEOD[i].ClosePrice,
                         volume: AmCharts.roundTo(_symbolEOD[i].Volume / 1000000, 2),
 
-                        macd_open: macd_open,
-                        macd_high: macd_high,
-                        macd_low: macd_low,
-                        macd_close: macd_close,
-                        macd_volume: macd_volume,
-
                         ema1: 'NaN',
                         ema2: 'NaN',
                         sma1: 'NaN',
                         sma2: 'NaN',
 
+                        macdClose: 'NaN',
                         macd: 'NaN',
                         macdEma1: 'NaN',
                         macdEma2: 'NaN',
                         macdSignal: 'NaN',
-                        macdColor: _greenColor
+                        macdHistogram: 'NaN',
+                        macdColor: _greenColor,
+
+                        macd2Close: 'NaN',
+                        macd2: 'NaN',
+                        macd2Ema1: 'NaN',
+                        macd2Ema2: 'NaN',
+                        macd2Signal: 'NaN',
+                        macd2Histogram: 'NaN',
+                        macd2Color: _greenColor
                     });
                 }
             }
 
-        // ==============
-        // Weekly-Monthly
-        // ==============  
         } else if (dataType == "Weekly") {     
             if (_symbolEOD.length > 0) {
                 for (var i = _symbolEOD.length - 1; i >= 0; i--) {
                     var quoteDate = parseChartDate(_symbolEOD[i].QuoteDate);
+
                     if (i == _symbolEOD.length - 1) {
                         weekly_open = _symbolEOD[i].OpenPrice;
                         weekly_high = _symbolEOD[i].HighPrice;
                         weekly_low = _symbolEOD[i].LowPrice;
                         weekly_close = _symbolEOD[i].ClosePrice;
                         weekly_volume = AmCharts.roundTo(_symbolEOD[i].Volume / 1000000, 2);
-
-                        monthly_previousMonth = quoteDate.getMonth();
                     } else {
-                        // Weekly
                         if (quoteDate.getDay() == 5) {
-                            weekly_open = _symbolEOD[i].OpenPrice;
-                            weekly_high = _symbolEOD[i].HighPrice;
-                            weekly_low = _symbolEOD[i].LowPrice;
                             weekly_close = _symbolEOD[i].ClosePrice;
                             weekly_volume = AmCharts.roundTo(_symbolEOD[i].Volume / 1000000, 2);
 
-                            // Monthly
-                            if (monthly_previousMonth != quoteDate.getMonth()) {
-                                macd_open = _symbolEOD[i].OpenPrice;
-                                macd_high = _symbolEOD[i].HighPrice;
-                                macd_low = _symbolEOD[i].LowPrice;
-                                macd_close = _symbolEOD[i].ClosePrice;
-                                macd_volume = AmCharts.roundTo(_symbolEOD[i].Volume / 1000000, 2);
+                            data.push({
+                                date: quoteDate,
 
-                                monthly_previousMonth = quoteDate.getMonth();
-                            } else {
-                                macd_open = 'NaN';
-                                macd_high = 'NaN';
-                                macd_low = 'NaN';
-                                macd_close = 'NaN';
-                                macd_volume = 'NaN';
-                            }
+                                open: weekly_open,
+                                high: weekly_high,
+                                low: weekly_low,
+                                close: weekly_close,
+                                volume: 'NaN',
+                                // volume: weekly_volume,
 
-                        } else {
+                                ema1: 'NaN',
+                                ema2: 'NaN',
+                                sma1: 'NaN',
+                                sma2: 'NaN',
+
+                                macdClose: 'NaN',
+                                macd: 'NaN',
+                                macdEma1: 'NaN',
+                                macdEma2: 'NaN',
+                                macdSignal: 'NaN',
+                                macdHistogram: 'NaN',
+                                macdColor: _greenColor,
+
+                                macd2Close: 'NaN',
+                                macd2: 'NaN',
+                                macd2Ema1: 'NaN',
+                                macd2Ema2: 'NaN',
+                                macd2Signal: 'NaN',
+                                macd2Histogram: 'NaN',
+                                macd2Color: _greenColor
+                            });
+
                             weekly_open = 'NaN';
                             weekly_high = 'NaN';
                             weekly_low = 'NaN';
                             weekly_close = 'NaN';
                             weekly_volume = 'NaN';
+
+                        } else {
+                            if (weekly_open == 'NaN') weekly_open = _symbolEOD[i].OpenPrice;
+                            if (weekly_high == 'NaN') weekly_high = _symbolEOD[i].HighPrice;
+                                else { if (_symbolEOD[i].HighPrice > weekly_high) weekly_high = _symbolEOD[i].HighPrice; }
+                            if (weekly_low == 'NaN')  weekly_low = _symbolEOD[i].LowPrice;
+                                else { if (_symbolEOD[i].LowPrice < weekly_low) weekly_low = _symbolEOD[i].LowPrice; }
                         }
-                    }
-                    // Save Weekly-Monthly
-                    if (weekly_close != 'NaN') {
-                        data.push({
-                            date: quoteDate,
-
-                            open: weekly_open,
-                            high: weekly_high,
-                            low: weekly_low,
-                            close: weekly_close,
-                            volume: weekly_volume,
-
-                            macd_open: macd_open,
-                            macd_high: macd_high,
-                            macd_low: macd_low,
-                            macd_close: macd_close,
-                            macd_volume: macd_volume,
-
-                            ema1: 'NaN',
-                            ema2: 'NaN',
-                            sma1: 'NaN',
-                            sma2: 'NaN',
-
-                            macd: 'NaN',
-                            macdEma1: 'NaN',
-                            macdEma2: 'NaN',
-                            macdSignal: 'NaN',
-                            macdColor: _greenColor
-                        });
                     }
                 }
             }
-
-        // ==============
-        // Monthly-Yearly
-        // ==============    
+  
         } else if (dataType == "Monthly") {     
             if (_symbolEOD.length > 0) {
                 for (var i = _symbolEOD.length - 1; i >= 0; i--) {
@@ -494,80 +455,64 @@
                         monthly_volume = AmCharts.roundTo(_symbolEOD[i].Volume / 1000000, 2);
 
                         monthly_previousMonth = quoteDate.getMonth();
-
-                        yearly_previousYear = quoteDate.getYear();
                     } else {
-                        // Monthly
+
                         if (monthly_previousMonth != quoteDate.getMonth()) {
-                            monthly_open = _symbolEOD[i].OpenPrice;
-                            monthly_high = _symbolEOD[i].HighPrice;
-                            monthly_low = _symbolEOD[i].LowPrice;
+
                             monthly_close = _symbolEOD[i].ClosePrice;
                             monthly_volume = AmCharts.roundTo(_symbolEOD[i].Volume / 1000000, 2);
 
-                            monthly_previousMonth = quoteDate.getMonth();
+                            data.push({
+                                date: quoteDate,
 
-                            // Yearly
-                            if (yearly_previousYear != quoteDate.getYear()) {
-                                macd_open = _symbolEOD[i].OpenPrice;
-                                macd_high = _symbolEOD[i].HighPrice;
-                                macd_low = _symbolEOD[i].LowPrice;
-                                macd_close = _symbolEOD[i].ClosePrice;
-                                macd_volume = AmCharts.roundTo(_symbolEOD[i].Volume / 1000000, 2);
+                                open: monthly_open,
+                                high: monthly_high,
+                                low: monthly_low,
+                                close: monthly_close,
+                                volume: 'NaN',
+                                //volume: monthly_volume,
 
-                                yearly_previousYear = quoteDate.getYear();
-                            } else {
-                                macd_open = 'NaN';
-                                macd_high = 'NaN';
-                                macd_low = 'NaN';
-                                macd_close = 'NaN';
-                                macd_volume = 'NaN';
-                            }
-                        } else {
+                                ema1: 'NaN',
+                                ema2: 'NaN',
+                                sma1: 'NaN',
+                                sma2: 'NaN',
+
+                                macdClose: 'NaN',
+                                macd: 'NaN',
+                                macdEma1: 'NaN',
+                                macdEma2: 'NaN',
+                                macdSignal: 'NaN',
+                                macdHistogram: 'NaN',
+                                macdColor: _greenColor,
+
+                                macd2Close: 'NaN',
+                                macd2: 'NaN',
+                                macd2Ema1: 'NaN',
+                                macd2Ema2: 'NaN',
+                                macd2Signal: 'NaN',
+                                macd2Histogram: 'NaN',
+                                macd2Color: _greenColor
+                            });
+
                             monthly_open = 'NaN';
                             monthly_high = 'NaN';
                             monthly_low = 'NaN';
                             monthly_close = 'NaN';
                             monthly_volume = 'NaN';
+
+                            monthly_previousMonth = quoteDate.getMonth();
+
+                        } else {
+                            if (monthly_open == 'NaN') monthly_open = _symbolEOD[i].OpenPrice;
+                            if (monthly_high == 'NaN') monthly_high = _symbolEOD[i].HighPrice;
+                                else { if (_symbolEOD[i].HighPrice > monthly_high) monthly_high = _symbolEOD[i].HighPrice; }
+                            if (monthly_low == 'NaN') monthly_low = _symbolEOD[i].LowPrice;
+                                else { if (_symbolEOD[i].LowPrice < monthly_low) monthly_low = _symbolEOD[i].LowPrice; }
                         }
                     }
-
-                    // Save Weekly-Monthly
-                    if (monthly_close != 'NaN') {
-                        data.push({
-                            date: quoteDate,
-
-                            open: monthly_open,
-                            high: monthly_high,
-                            low: monthly_low,
-                            close: monthly_close,
-                            volume: monthly_volume,
-
-                            macd_open: macd_open,
-                            macd_high: macd_high,
-                            macd_low: macd_low,
-                            macd_close: macd_close,
-                            macd_volume: macd_volume,
-
-                            ema1: 'NaN',
-                            ema2: 'NaN',
-                            sma1: 'NaN',
-                            sma2: 'NaN',
-
-                            macd: 'NaN',
-                            macdEma1: 'NaN',
-                            macdEma2: 'NaN',
-                            macdSignal: 'NaN',
-                            macdColor: _greenColor
-                        });
-                    }
-
                 }
             }
 
-        // ============
-        // 15Min-Hourly
-        // ============
         } else if (dataType == "15Min") {       
             if (_symbolIntraday.length > 0) {
                 for (var i = 0; i < _symbolIntraday.length; i++) {
@@ -578,22 +523,6 @@
                     var quoteDate = new Date(dp[0], dp[1] - 1, dp[2], dp[3], dp[4], dp[5]);
 
                     if (((quoteDate.getHours() + (quoteDate.getMinutes() / 100)) >= 9.30) && ((quoteDate.getHours() + (quoteDate.getMinutes() / 100)) <= 16)) {
-                        // hourly
-                        if (quoteDate.getMinutes() == 0) {
-                            macd_open = _symbolIntraday[i].open;
-                            macd_high = _symbolIntraday[i].high;
-                            macd_low = _symbolIntraday[i].low;
-                            macd_close = _symbolIntraday[i].close;
-                            macd_volume = AmCharts.roundTo(_symbolIntraday[i].volume / 1000000, 2);
-                        } else {
-                            macd_open = 'NaN';
-                            macd_high = 'NaN';
-                            macd_low = 'NaN';
-                            macd_close = 'NaN';
-                            macd_volume = 'NaN';
-                        }
-
-                        // Save 15Min-Hourly
                         data.push({
                             date: quoteDate,
 
@@ -601,38 +530,34 @@
                             high: _symbolIntraday[i].high,
                             low: _symbolIntraday[i].low,
                             close: _symbolIntraday[i].close,
-                            volume: AmCharts.roundTo(_symbolIntraday[i].volume / 1000000, 2),
-
-                            macd_open: macd_open,
-                            macd_high: macd_high,
-                            macd_low: macd_low,
-                            macd_close: macd_close,
-                            macd_volume: macd_volume,
+                            volume: 'NaN',
+                            // volume: AmCharts.roundTo(_symbolIntraday[i].volume / 1000000, 2),
 
                             ema1: 'NaN',
                             ema2: 'NaN',
                             sma1: 'NaN',
                             sma2: 'NaN',
 
+                            macdClose: 'NaN',
                             macd: 'NaN',
                             macdEma1: 'NaN',
                             macdEma2: 'NaN',
                             macdSignal: 'NaN',
+                            macdHistogram: 'NaN',
                             macdColor: _greenColor,
 
-                            macd2: 'NaN',                   // Additional overlay 120 min
+                            macd2Close: 'NaN',
+                            macd2: 'NaN',                   
                             macd2Ema1: 'NaN',
                             macd2Ema2: 'NaN',
                             macd2Signal: 'NaN',
+                            macd2Histogram: 'NaN',
                             macd2Color: _greenColor
                         });
                     }
                 }
             }
 
-        // ============
-        // Hourly-Daily 
-        // ============
         } else if (dataType == "Hourly") {
             if (_symbolIntraday.length > 0) {
                 for (var i = 0; i < _symbolIntraday.length; i++) {
@@ -643,36 +568,12 @@
                     var quoteDate = new Date(dp[0], dp[1] - 1, dp[2], dp[3], dp[4], dp[5]);
 
                     if (((quoteDate.getHours() + (quoteDate.getMinutes() / 100)) >= 9.30) && ((quoteDate.getHours() + (quoteDate.getMinutes() / 100)) <= 16)) {
+
                         if (quoteDate.getMinutes() == 0) {
-                            hourly_open = _symbolIntraday[i].open;
-                            hourly_high = _symbolIntraday[i].high;
-                            hourly_low = _symbolIntraday[i].low;
+
                             hourly_close = _symbolIntraday[i].close;
                             hourly_volume = AmCharts.roundTo(_symbolIntraday[i].volume / 1000000, 2);
 
-                            if (quoteDate.getHours() == 16) {
-                                macd_open = _symbolIntraday[i].open;
-                                macd_high = _symbolIntraday[i].high;
-                                macd_low = _symbolIntraday[i].low;
-                                macd_close = _symbolIntraday[i].close;
-                                macd_volume = AmCharts.roundTo(_symbolIntraday[i].volume / 1000000, 2);
-                            } else {
-                                macd_open = 'NaN';
-                                macd_high = 'NaN';
-                                macd_low = 'NaN';
-                                macd_close = 'NaN';
-                                macd_volume = 'NaN';
-                            }
-                        } else {
-                            hourly_open = 'NaN';
-                            hourly_high = 'NaN';
-                            hourly_low = 'NaN';
-                            hourly_close = 'NaN';
-                            hourly_volume = 'NaN';
-                        }
-
-                        // Save Hourly-Daily
-                        if (hourly_close != 'NaN') {
                             data.push({
                                 date: quoteDate,
 
@@ -680,25 +581,43 @@
                                 high: hourly_high,
                                 low: hourly_low,
                                 close: hourly_close,
-                                volume: hourly_volume,
-
-                                macd_open: macd_open,
-                                macd_high: macd_high,
-                                macd_low: macd_low,
-                                macd_close: macd_close,
-                                macd_volume: macd_volume,
+                                volume: 'NaN',
+                                // volume: hourly_volume,
 
                                 ema1: 'NaN',
                                 ema2: 'NaN',
                                 sma1: 'NaN',
                                 sma2: 'NaN',
 
+                                macdClose: 'NaN',
                                 macd: 'NaN',
                                 macdEma1: 'NaN',
                                 macdEma2: 'NaN',
                                 macdSignal: 'NaN',
-                                macdColor: _greenColor
+                                macdHistogram: 'NaN',
+                                macdColor: _greenColor,
+
+                                macd2Close: 'NaN',
+                                macd2: 'NaN',
+                                macd2Ema1: 'NaN',
+                                macd2Ema2: 'NaN',
+                                macd2Signal: 'NaN',
+                                macd2Histogram: 'NaN',
+                                macd2Color: _greenColor
                             });
+
+                            hourly_open = 'NaN'
+                            hourly_high = 'NaN';
+                            hourly_low = 'NaN';
+                            hourly_close = 'NaN';
+                            hourly_volume = 'NaN';
+
+                        } else {
+                            if (hourly_open == 'NaN') hourly_open = _symbolIntraday[i].open;
+                            if (hourly_high == 'NaN') hourly_high = _symbolIntraday[i].high;
+                                else { if (_symbolIntraday[i].high > hourly_high) hourly_high = _symbolIntraday[i].high; }
+                            if (hourly_low == 'NaN') hourly_low = _symbolIntraday[i].low;
+                                else { if (_symbolIntraday[i].low < hourly_low) hourly_low = _symbolIntraday[i].low; }
                         }
                     }
                 }
@@ -708,7 +627,8 @@
         // ============
         // Compute MACD
         // ============
-        computeDataMACD(data);
+        computeDataMACD(data, dataType, 1);
+        if (dataType == "15Min") computeDataMACD(data, dataType, 2);
 
         // ===============
         // Compute EMA/SMA
@@ -740,7 +660,44 @@
 
         return data;
     }
-    function computeDataMACD(data) {
+    function computeDataCloseMACD(data, dataType) {
+        var previousMonth = 0;
+        var previousYear = 0;
+
+        if (dataType == "Daily") {
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].date.getDay() == 5) {
+                    data[i].macdClose = data[i].close;
+                } 
+            }
+        } else if (dataType == "Weekly") {
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].date.getDay() == 5) {
+                    if (previousMonth != data[i].date.getMonth()) {
+                        data[i].macdClose = data[i].close;
+                        previousMonth = data[i].date.getMonth();
+                    }
+                }
+            }
+        } else if (dataType == "15Min") {
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].date.getMinutes() == 0) {
+                    data[i].macdClose = data[i].close;
+                    if (parseFloat(data[i].date.getHours()) % 2) {
+                        data[i].macd2Close = data[i].close;
+                    }
+                }
+            }
+        } else if (dataType == "Hourly") {
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].date.getMinutes() == 0 && data[i].date.getHours() == 16) {
+                    data[i].macdClose = data[i].close;
+                }
+            }
+        }
+    }
+    function computeDataMACD(data, dataType, macd)
+    {
         var macd_index = 0;
 
         var ema1_closePrices = 0;
@@ -755,64 +712,128 @@
         var macd_values_previous = 0;
         var macd_signal = 0;
         var macd_signal_previous = 0;
+        var macd_histogram_previous = 0;
 
         var fast_length = 12;
         var slow_length = 26;
-        var macd_length = 9
+        var signal_length = 9
 
         var macd_color = _greenColor;
         var closePrice = 0;
 
+        var previousMonth = 0;
+        var previousYear = 0;
+
+        var macd_signal_counter = 1;
+
+        // Prepare MACD Data Timeframe
+        computeDataCloseMACD(data, dataType);
+
+        // Compute MACD 
         for (var i = 0; i < data.length; i++) {
-            closePrice = data[i].macd_close;
+
+            if (macd == 1) {
+                closePrice = data[i].macdClose;
+            } else {
+                closePrice = data[i].macd2Close;
+            }
+
             if (closePrice != 'NaN') {
+
                 // fast ema
                 if (macd_index < (fast_length - 1)) {
                     ema1_closePrices = ema1_closePrices + closePrice;
+
                 } else if (macd_index == (fast_length - 1)) {
                     ema1 = ema1_closePrices / fast_length;
                     ema1_previous = ema1;
-                    data[i].macdEma1 = ema1;
+
+                    if (macd == 1) data[i].macdEma1 = ema1;
+                    else data[i].macd2Ema1 = ema1;
+
                 } else if (macd_index > (fast_length - 1)) {
                     ema1 = (closePrice * (2 / (fast_length + 1)) + ema1_previous * (1 - (2 / (fast_length + 1))));
                     ema1_previous = ema1;
-                    data[i].macdEma1 = ema1;
+
+                    if (macd == 1) data[i].macdEma1 = ema1;
+                    else data[i].macd2Ema1 = ema1;
                 }
-                // slow ema
+
+                // slow ema / macd / signal / macd histogram
                 if (macd_index < (slow_length - 1)) {
                     ema2_closePrices = ema2_closePrices + closePrice;
+
                 } else if (macd_index == (slow_length - 1)) {
                     ema2 = ema2_closePrices / slow_length;
                     ema2_previous = ema2;
-                    data[i].macdEma2 = ema2;
-                    data[i].macd = data[i].macdEma1 - ema2;
-                    data[i].macdColor = _greenColor;
-                    if (i > 0 && (macd_values_previous > data[i].macd)) {
-                        data[i].macdColor = _redColor;
+
+                    if (macd == 1) {
+                        data[i].macdEma2 = ema2;
+                        data[i].macd = data[i].macdEma1 - ema2;
+                    } else {
+                        data[i].macd2Ema2 = ema2;
+                        data[i].macd2 = data[i].macd2Ema1 - ema2;
                     }
-                    macd_values_previous = data[i].macd;
+
+
                 } else if (macd_index > (slow_length - 1)) {
                     ema2 = (closePrice * (2 / (slow_length + 1)) + ema2_previous * (1 - (2 / (slow_length + 1))));
                     ema2_previous = ema2;
-                    data[i].macdEma2 = ema2;
-                    data[i].macd = data[i].macdEma1 - ema2;
-                    data[i].macdColor = _greenColor;
-                    if (i > 0 && (macd_values_previous > data[i].macd)) {
-                        data[i].macdColor = _redColor;
+
+                    if (macd == 1) {
+                        data[i].macdEma2 = ema2;
+                        data[i].macd = data[i].macdEma1 - ema2;
+                    } else {
+                        data[i].macd2Ema2 = ema2;
+                        data[i].macd2 = data[i].macd2Ema1 - ema2;
                     }
-                    macd_values_previous = data[i].macd;
-                }
-                // signal
-                if (macd_index < (slow_length + macd_length - 1)) {
-                    macd_values = macd_values + data[i].macd;
-                } else if (macd_index == (slow_length + macd_length - 1)) {
-                    macd_signal = macd_values / macd_length;
-                    macd_signal_previous = macd_signal;
-                    data[i].macdSignal = macd_signal;
-                } else if (macd_index > (slow_length + macd_length - 1)) {
-                    macd_signal = (data[i].macd * (2 / (macd_length + 1)) + macd_signal * (1 - (2 / (macd_length + 1))));
-                    macd_signal_previous = macd_signal;
-                    data[i].macdSignal = macd_signal;
+
+                    // signal / macd histogram
+                    if (macd_signal_counter < signal_length) {
+
+                        if (macd == 1) macd_values = macd_values + data[i].macd;
+                        else macd_values = macd_values + data[i].macd2;
+
+                    } else if (macd_signal_counter == signal_length) {
+                        macd_signal = macd_values / signal_length;
+
+                        if (macd == 1) {
+                            data[i].macdSignal = macd_signal;
+                            data[i].macdHistogram = data[i].macd - macd_signal;
+                            data[i].macdColor = _greenColor;
+                            if (i > 0 && (macd_histogram_previous > data[i].macdHistogram)) data[i].macdColor = _redColor;
+                            macd_histogram_previous = data[i].macdHistogram;
+                        } else {
+                            data[i].macd2Signal = macd_signal;
+                            data[i].macd2Histogram = data[i].macd2 - macd_signal;
+                            data[i].macd2Color = _greenColor;
+                            if (i > 0 && (macd_histogram_previous > data[i].macd2Histogram)) data[i].macd2Color = _redColor;
+                            macd_histogram_previous = data[i].macd2Histogram;
+                        }
+
+                    } else if (macd_signal_counter > signal_length) {
+
+                        if (macd == 1) {
+                            macd_signal = (data[i].macd * (2 / (signal_length + 1)) + macd_signal_previous * (1 - (2 / (signal_length + 1))));
+                            macd_signal_previous = macd_signal;
+                            data[i].macdSignal = macd_signal;
+                            data[i].macdHistogram = data[i].macd - macd_signal;
+                            data[i].macdColor = _greenColor;
+                            if (i > 0 && (macd_histogram_previous > data[i].macdHistogram)) data[i].macdColor = _redColor;
+                            macd_histogram_previous = data[i].macdHistogram;
+                        } else {
+                            macd_signal = (data[i].macd2 * (2 / (signal_length + 1)) + macd_signal_previous * (1 - (2 / (signal_length + 1))));
+                            macd_signal_previous = macd_signal;
+                            data[i].macd2Signal = macd_signal;
+                            data[i].macd2Histogram = data[i].macd2 - macd_signal;
+                            data[i].macdC2olor = _greenColor;
+                            if (i > 0 && (macd_histogram_previous > data[i].macd2Histogram)) data[i].macd2Color = _redColor;
+                            macd_histogram_previous = data[i].macd2Histogram;
+                        }
+
+                    }
+
+                    macd_signal_counter++;
                 }
 
                 macd_index++;
@@ -962,6 +983,12 @@
             { fromField: "macd", toField: "macd" },
             { fromField: "macdColor", toField: "macdColor" },
             { fromField: "macdSignal", toField: "macdSignal" },
+            { fromField: "macdHistogram", toField: "macdHistogram" },
+
+            { fromField: "macd2", toField: "macd2" },
+            { fromField: "macd2Color", toField: "macd2Color" },
+            { fromField: "macd2Signal", toField: "macd2Signal" },
+            { fromField: "macd2Histogram", toField: "macd2Histogram" },
 
             { fromField: "ema1", toField: "ema1" },
             { fromField: "ema2", toField: "ema2" },
@@ -1016,13 +1043,16 @@
         var highField = "high";
         var lowField = "low";
         var volumeField = "volume";
-        var macdField = "macd";
+        var macdField = "macdHistogram";
         var macdColorField = "macdColor";
         var macdSignalField = "macdSignal";
         var ema1Field = "ema1";
         var ema2Field = "ema2";
         var sma1Field = "sma1";
         var sma2Field = "sma2";
+        var macd2Field = "macd2Histogram";
+        var macd2ColorField = "macd2Color";
+        var macd2SignalField = "macd2Signal";
 
         // chart graphs
         var chartGraph1 = new AmCharts.StockGraph();
@@ -1051,8 +1081,8 @@
         chartGraph2.valueField = volumeField;
         chartGraph2.type = "column";
         chartGraph2.useDataSetColors = false;
-        chartGraph2.color = _grayColor;
-        chartGraph2.lineColor = _grayColor;
+        chartGraph2.color = _darkGrayColor;
+        chartGraph2.lineColor = _darkGrayColor;
         chartGraph2.showBalloon = false;
         chartGraph2.lineAlpha = 0;
         chartGraph2.fillAlphas = 0.3;
@@ -1113,6 +1143,17 @@
         chartGraph8.lineColor = _salmonColor;
         chartGraph8.valueAxis = chartAxis1;
 
+        var chartGraph9 = new AmCharts.StockGraph();
+        chartGraph9.id = "MACD2";
+        chartGraph9.title = "MACD2";
+        chartGraph9.valueField = macd2Field;
+        chartGraph9.useDataSetColors = false;
+        chartGraph9.lineColorField = macd2ColorField;
+        chartGraph9.type = "step";
+        chartGraph9.lineThickness = 1;
+        chartGraph9.showBalloon = false;
+        chartGraph9.valueAxis = chartAxis3;
+
         var chartScrollbarSettings = new AmCharts.ChartScrollbarSettings();
         chartScrollbarSettings.graph = chartGraph1;
         chartScrollbarSettings.graphType = "line";
@@ -1152,6 +1193,7 @@
         chartPanel2.percentHeight = 30;
         chartPanel2.addValueAxis(chartAxis3);
         chartPanel2.addStockGraph(chartGraph3);
+        chartPanel2.addStockGraph(chartGraph9);
         chartPanel2.addTrendLine(zeroLine);
 
         // trend lines (magenta channel)
